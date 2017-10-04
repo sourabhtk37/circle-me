@@ -22,13 +22,14 @@ jobs:
             - run: make
             - persist_to_workspace:
                 root: .
-                paths: circle-me
+                paths: 
+                    - circle-me
     deploy:
         <<: *config
         steps:
             - attach_workspace:
-                at: circle-me
-            - run: ls circle-me
+                at: .
+            - run: file circle-me
 
 workflows:
     version: 2
