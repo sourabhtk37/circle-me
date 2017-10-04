@@ -49,7 +49,10 @@ jobs:
                 if [[ "${CIRCLE_BRANCH}" == "master" || ! -z "${CIRCLE_TAG}" ]]; then
                     aws s3 sync $base s3://binaries-circle
                 else
-                    echo "not on branch master; not deploying"
+                    echo "Deploys only work for"
+                    echo "\t * master branch"
+                    echo "\t * tags"
+                    echo "nothing to do here"
                 fi
 
 workflows:
