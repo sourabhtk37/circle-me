@@ -47,7 +47,7 @@ jobs:
                 mkdir -p $out
                 cp circle-me $out
 
-                if [[ "${CIRCLE_BRANCH}" == master || $(git branch --contains "${CIRCLE_TAG}" | sed "s/(.*)//" | tr -d " *") == master ]]; then
+                if [[ "${CIRCLE_BRANCH}" == master || $(git branch --contains "${CIRCLE_TAG}" | grep "\bmaster\b") ]]; then
                     aws s3 sync $base s3://binaries-circle
                 else
                     echo "Deploys only work for"
