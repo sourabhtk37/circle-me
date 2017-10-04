@@ -49,11 +49,14 @@ workflows:
             - test:
                 filters:
                     branches:
-                        only: master
+                        ignore: /.*/
                     tags:
                         only: /.*/
 
             - build_executable:
                 requires:
                     - test
+                filters:
+                    tags:
+                        only: /.*/
 
