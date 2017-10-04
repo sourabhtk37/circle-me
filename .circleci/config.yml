@@ -30,7 +30,7 @@ jobs:
             - checkout
             - attach_workspace:
                 at: .
-            - run: sudo apt-get install awscli
+            - run: sudo apt-get install awscli git
             - run: aws configure set default.s3.signature_version s3v4
             - run: |
                 base=dist
@@ -46,7 +46,7 @@ jobs:
                 mkdir -p $out
                 cp circle-me $out
 
-                if [[ "${CIRCLE_BRANCH}" == "master" || ! -z "${CIRCLE_TAG}" ]]; then
+                if [[ "${CIRCLE_BRANCH}" == "master" || $(git rev-parse --contains "${CIRCLE_TAG}") == "master" ]]; then
                     aws s3 sync $base s3://binaries-circle
                 else
                     echo "Deploys only work for"
