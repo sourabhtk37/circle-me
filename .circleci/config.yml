@@ -32,7 +32,7 @@ jobs:
             - run: sudo apt-get install awscli
             - run: |
                 if [[ "${CIRCLE_BRANCH}" == "master" ]]; then
-                    aws s3 sync circle-me s3://testbucketforme1337/circle-me/master/
+                    aws s3 mv circle-me s3://testbucketforme1337/circle-me/master/
                 else
                     echo "not on branch master; not deploying"
                 fi
