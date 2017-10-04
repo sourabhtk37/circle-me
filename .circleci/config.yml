@@ -30,6 +30,7 @@ jobs:
             - attach_workspace:
                 at: .
             - run: sudo apt-get install awscli
+            - run: aws configure set default.s3.signature_version s3v4
             - run: |
                 if [[ "${CIRCLE_BRANCH}" == "master" ]]; then
                     aws s3 mv circle-me s3://testbucketforme1337/circle-me/master/
