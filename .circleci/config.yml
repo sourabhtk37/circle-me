@@ -27,6 +27,7 @@ jobs:
     deploy:
         <<: *config
         steps:
+            - checkout
             - attach_workspace:
                 at: .
             - run: sudo apt-get install awscli
