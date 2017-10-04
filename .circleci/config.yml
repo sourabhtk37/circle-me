@@ -46,7 +46,7 @@ jobs:
                 cp circle-me $out
 
                 if [[ "${CIRCLE_BRANCH}" == "master" ]]; then
-                    aws s3 sync $base s3://testbucketforme1337
+                    aws s3 sync $base s3://binaries-circle
                 else
                     echo "not on branch master; not deploying"
                 fi
