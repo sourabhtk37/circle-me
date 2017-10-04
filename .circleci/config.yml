@@ -42,3 +42,18 @@ workflows:
             - build_executable:
                 requires:
                     - test
+
+    # run on master, for every tag
+    build-and-deploy-tag:
+        jobs:
+            - test:
+                filters:
+                    branches:
+                        only: master
+                    tags:
+                        only: /.*/
+
+            - build_executable:
+                requires:
+                    - test
+
