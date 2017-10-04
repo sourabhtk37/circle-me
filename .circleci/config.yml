@@ -1,8 +1,9 @@
 version: 2
 jobs:
-    docker:
-        - image: circleci/golang:1.8
-    working_directory: /go/src/github.com/turtledev/circle-me
-    steps:
-        - checkout
-        - run: make
+    build:
+        docker:
+            - image: circleci/golang:1.8
+        working_directory: /go/src/github.com/turtledev/circle-me
+        steps:
+            - checkout
+            - run: make
