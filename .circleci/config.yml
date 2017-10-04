@@ -33,7 +33,6 @@ jobs:
             - run: sudo apt-get install awscli git
             - run: aws configure set default.s3.signature_version s3v4
             - run: |
-                set -x
                 base=dist
                 out=$base/circle-me
 
