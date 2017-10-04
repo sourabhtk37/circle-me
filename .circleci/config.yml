@@ -41,7 +41,7 @@ jobs:
                     out="$out/master"
                 fi
                 
-                rmdir -rf $out
+                rm -rf $out
                 mkdir -p $out
                 cp circle-me $out
 
