@@ -27,7 +27,7 @@ jobs:
         <<: *config
         steps:
             - attach_workspace:
-                paths: circle-me
+                at: circle-me
             - run: circle-me
 
 workflows:
@@ -52,6 +52,9 @@ workflows:
             - build:
                 requires:
                     - test
+            - deploy:
+                requires:
+                    - build
 
     # run on master, for every tag
     # build-and-deploy-tag:
