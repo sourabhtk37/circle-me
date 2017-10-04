@@ -6,4 +6,5 @@ jobs:
         working_directory: /go/src/github.com/turtledev/circle-me
         steps:
             - checkout
+            - run: dep ensure
             - run: make test
