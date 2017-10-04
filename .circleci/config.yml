@@ -33,6 +33,13 @@ jobs:
             - run: sudo apt-get install awscli git
             - run: aws configure set default.s3.signature_version s3v4
             - run: |
+                # circleci rebases any tags over the local master branch; sync it to remote
+                current=$(git rev-parse --abbrev-ref HEAD)
+                git checkout master
+                git reset --hard origin/master
+                git checkout $current
+
+                # we're going to create a directory tree that we'll sync to s3
                 base=dist
                 out=$base/circle-me
 
@@ -42,10 +49,12 @@ jobs:
                     out="$out/master"
                 fi
                 
+                # ensure it exists
                 rm -rf $out
                 mkdir -p $out
                 cp circle-me $out
 
+                # sync
                 if [[ "${CIRCLE_BRANCH}" == master || $(git branch --contains "${CIRCLE_TAG}" | grep "\bmaster\b") ]]; then
                     aws s3 sync $base s3://binaries-circle
                 else
