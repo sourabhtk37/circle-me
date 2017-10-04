@@ -55,7 +55,7 @@ workflows:
     version: 2
     
     # runs for every commit, on any branch (except master)
-    test-workflow:
+    run-tests:
         jobs:
             - test:
                 filters:
@@ -64,7 +64,7 @@ workflows:
                 
 
     # run for only master
-    build-and-deploy-master:
+    build-and-deploy-latest:
         jobs:
             - test:
                 filters:
@@ -78,7 +78,7 @@ workflows:
                     - build
 
     # tag specific
-    build-and-deploy-tag:
+    build-and-deploy-release:
         jobs:
             - test:
                 filters:
@@ -87,9 +87,15 @@ workflows:
                     tags:
                         only: /.*/
 
-            - build_executable:
+            - build:
                 requires:
                     - test
+                filters:
+                    tags:
+                        only: /.*/
+            - deploy:
+                requires:
+                    - build
                 filters:
                     tags:
                         only: /.*/
