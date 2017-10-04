@@ -18,7 +18,13 @@ jobs:
         steps:
             - checkout
             - run: go get -u github.com/golang/dep/cmd/dep
+            - restore_cache:
+                key: v0-circle-me-{{ checksum "Gopkg.lock" }}
             - run: dep ensure
+            - save_cache:
+                key: v0-circle-me-{{ checksum "Gopkg.lock" }}
+                paths: 
+                    - vendor
             - run: make
             - persist_to_workspace:
                 root: .
