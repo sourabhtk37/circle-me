@@ -26,5 +26,8 @@ workflows:
     test-workflow:
         jobs:
             - test:
-                ignore: master
+                filters:
+                    branches:
+                        ignore: master
+                
 
