@@ -20,7 +20,7 @@ jobs:
             - run: go get -u github.com/golang/dep/cmd/dep
             - run: dep ensure
             - run: make
-            - persis_to_workspace:
+            - persist_to_workspace:
                 paths: circle-me
     deploy:
         <<: *config
