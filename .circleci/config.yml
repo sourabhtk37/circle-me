@@ -32,8 +32,21 @@ jobs:
             - run: sudo apt-get install awscli
             - run: aws configure set default.s3.signature_version s3v4
             - run: |
+                base=dist
+                out=$base/circle-me
+
+                if [[ ! -z "${CIRCLE_TAG}" ]]; then
+                    out="$out/${CIRCLE_TAG}"
+                else
+                    out="$out/master"
+                fi
+                
+                rmdir -rf $out
+                mkdir -p $out
+                cp circle-me $out
+
                 if [[ "${CIRCLE_BRANCH}" == "master" ]]; then
-                    aws s3 mv circle-me s3://testbucketforme1337/circle-me/master/
+                    aws s3 sync $base s3://testbucketforme1337
                 else
                     echo "not on branch master; not deploying"
                 fi
@@ -64,20 +77,20 @@ workflows:
                 requires:
                     - build
 
-    # run on master, for every tag
-    # build-and-deploy-tag:
-    #     jobs:
-    #         - test:
-    #             filters:
-    #                 branches:
-    #                     ignore: /.*/
-    #                 tags:
-    #                     only: /.*/
+    # tag specific
+    build-and-deploy-tag:
+        jobs:
+            - test:
+                filters:
+                    branches:
+                        ignore: /.*/
+                    tags:
+                        only: /.*/
 
-    #         - build_executable:
-    #             requires:
-    #                 - test
-    #             filters:
-    #                 tags:
-    #                     only: /.*/
+            - build_executable:
+                requires:
+                    - test
+                filters:
+                    tags:
+                        only: /.*/
 
