@@ -1,6 +1,6 @@
 version: 2
 jobs:
-    build:
+    test:
         docker:
             - image: circleci/golang:1.8
         working_directory: /go/src/github.com/turtledev/circle-me
@@ -9,3 +9,20 @@ jobs:
             - run: go get -u github.com/golang/dep/cmd/dep
             - run: dep ensure
             - run: make test
+    build_executable:
+        docker:
+            - image: circleci/golang:1.8
+        working_directory: /go/src/github.com/turtledev/circle-me
+        steps:
+            - checkout
+            - run: go get -u github.com/golang/dep/cmd/dep
+            - run: dep ensure
+            - run: make
+
+workflows:
+    version: 2
+    
+    # runs for every commit, on any branch
+    test-workflow:
+        jobs:
+            - test
