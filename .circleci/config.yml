@@ -22,7 +22,9 @@ jobs:
 workflows:
     version: 2
     
-    # runs for every commit, on any branch
+    # runs for every commit, on any branch (except master)
     test-workflow:
         jobs:
-            - test
+            - test:
+                ignore: master
+
