@@ -1,27 +1,33 @@
+config: &config
+    working_directory: /go/src/github.com/turtledev/circle-me
+    docker:
+        - image: circleci/golang:1.8
+
 version: 2
 jobs:
     test:
-        docker:
-            - image: circleci/golang:1.8
-        working_directory: /go/src/github.com/turtledev/circle-me
+        <<: *config
         steps:
             - checkout
             - run: go get -u github.com/golang/dep/cmd/dep
             - run: dep ensure
             - run: make test
 
-    build_executable:
-        docker:
-            - image: circleci/golang:1.8
-        working_directory: /go/src/github.com/turtledev/circle-me
+    build:
+        <<: *config
         steps:
             - checkout
             - run: go get -u github.com/golang/dep/cmd/dep
             - run: dep ensure
             - run: make
-            - store_artifacts:
-                path: circle-me
-
+            - persis_to_workspace:
+                paths: circle-me
+    deploy:
+        <<: *config
+        steps:
+            - attach_workspace:
+                paths: circle-me
+            - run: circle-me
 
 workflows:
     version: 2
@@ -42,24 +48,24 @@ workflows:
                 filters:
                     branches:
                         only: master
-            - build_executable:
+            - build_master:
                 requires:
                     - test
 
     # run on master, for every tag
-    build-and-deploy-tag:
-        jobs:
-            - test:
-                filters:
-                    branches:
-                        ignore: /.*/
-                    tags:
-                        only: /.*/
+    # build-and-deploy-tag:
+    #     jobs:
+    #         - test:
+    #             filters:
+    #                 branches:
+    #                     ignore: /.*/
+    #                 tags:
+    #                     only: /.*/
 
-            - build_executable:
-                requires:
-                    - test
-                filters:
-                    tags:
-                        only: /.*/
+    #         - build_executable:
+    #             requires:
+    #                 - test
+    #             filters:
+    #                 tags:
+    #                     only: /.*/
 
