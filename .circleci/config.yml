@@ -28,7 +28,7 @@ jobs:
         steps:
             - attach_workspace:
                 at: circle-me
-            - run: ./circle-me
+            - run: ls circle-me
 
 workflows:
     version: 2
